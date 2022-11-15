@@ -33,6 +33,8 @@ pipeline {
         }
     }
     post {
-        dependencyCheckPublisher pattern: 'dependency-check-report.xml'   
+        success{
+                dependencyCheckPublisher pattern: 'dependency-check-report.xml'      
+        }
     }
 }
