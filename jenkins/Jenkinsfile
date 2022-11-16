@@ -32,10 +32,20 @@ pipeline {
                 dependencyCheck additionalArguments: '--format HTML --format XML --disableYarnAudit', odcInstallation: 'Default'    
             }
         }
+    	stage('SonarQube Analysis') {
+	   steps {
+			script {
+				def scannerHome = tool 'SonarQube';
+				withSonarQubeEnv('SonarQube') {
+				sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=OWASP -Dsonar.sources=."
+			}
+		}
+	   }
+    	}
     }
     post {
         success {
-			dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-		}  
+		dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+	}  
     }
 }
